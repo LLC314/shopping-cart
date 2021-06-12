@@ -39,30 +39,48 @@ def to_usd(my_price):
 
 # TODO: write some Python code here to produce the desired output
 
-print(len(products))
+# print(len(products))
 
 # 1)capture product ids until we're done (use infinite while loop)
  
-selected_ids = [1,2,3,2,1]
+subtotal_price = 0 
+selected_ids = []
 while True:
     
-    selected_id = input("Please select/scan a valid product id:")
+    selected_id = input("Please select/scan a valid product id. Please enter 'done' when you are finished with your selection:")
     if selected_id.upper() == "DONE":
         break
     else:
         selected_ids.append(selected_id)
-    print(selected_id)
-
-print("WE HAVE REACHED THE END OF THE LOOP")
-print(selected_ids)
 
 
-# 2) Perform product lookups to determine the product's name and price
+
+print("-------------------")
+print("Lily's Convenience")
+print("(123)-456-7890")
+
+import datetime
+Checkout_Date_Time = datetime.datetime.now()
+print("Checkout Date and Time:", Checkout_Date_Time)
+print("-------------------")
+print("Your Items:")
+
 
 for selected_id in selected_ids:
-    print(selected_id)
-
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
-    print(matching_product["name"], matching_product["price"])
-# use list comprehension print ([____ for p in products])
+    subtotal_price = subtotal_price + matching_product["price"]
+    print("+ ", matching_product["name"], matching_product["price"])
+
+print("-------------------")
+print("Subtotal: " + to_usd(subtotal_price))
+
+Sales_Tax = subtotal_price*.0875
+print("Sales tax (8.75%):", to_usd(Sales_Tax)) 
+
+Grand_Total = subtotal_price+Sales_Tax
+print("Total:", to_usd(Grand_Total)) 
+
+print("-------------------")
+print("Thank you, please come again!")
+
