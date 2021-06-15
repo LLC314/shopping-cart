@@ -69,17 +69,30 @@ print("Your Items:")
 for selected_id in selected_ids:
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
-    subtotal_price = subtotal_price + matching_product["price"]
     print("+ ", matching_product["name"], matching_product["price"])
 
 print("-------------------")
-print("Subtotal: " + to_usd(subtotal_price))
 
-Sales_Tax = subtotal_price*.0875
-print("Sales tax (8.75%):", to_usd(Sales_Tax)) 
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-Grand_Total = subtotal_price+Sales_Tax
-print("Total:", to_usd(Grand_Total)) 
+Tax_Rate = float(os.getenv("Tax_Rate", default = "0"))
+
+sum_price=[]
+for selected_id in selected_ids:
+    matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
+    matching_product = matching_products[0]
+    sum_price.append((matching_product["price"]))
+
+subtotal = to_usd(sum(sum_price))
+print("Subtotal:", subtotal)
+
+sales_tax = to_usd(sum(sum_price)*Tax_Rate)
+print("Sales Tax:", sales_tax)
+
+total_price = to_usd(sum(sum_price)*(1+Tax_Rate))
+print("Total Price:", total_price)
 
 print("-------------------")
 print("Thank you, please come again!")
